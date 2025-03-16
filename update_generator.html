@@ -251,16 +251,36 @@
         }
 
         function downloadJson() {
-            const jsonText = document.getElementById('jsonOutput').textContent;
-            const blob = new Blob([jsonText], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'update.json';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            try {
+                const jsonText = document.getElementById('jsonOutput').textContent;
+                if (!jsonText || jsonText.trim() === '') {
+                    alert('请先生成配置内容');
+                    return;
+                }
+                
+                // 创建 Blob 对象
+                const blob = new Blob([jsonText], { type: 'application/json' });
+                
+                // 创建下载链接
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'update.json';
+                
+                // 添加到文档并触发点击
+                document.body.appendChild(a);
+                
+                // 使用 setTimeout 确保下载触发
+                setTimeout(() => {
+                    a.click();
+                    // 清理
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            } catch (error) {
+                console.error('下载配置时出错:', error);
+                alert('下载配置时出错: ' + error.message);
+            }
         }
 
         document.getElementById('updateForm').addEventListener('submit', function(e) {
