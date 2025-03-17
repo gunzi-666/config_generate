@@ -5,107 +5,277 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenClash 配置生成器</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4A90E2;
-            --secondary-color: #F5F7FA;
-            --text-color: #2C3E50;
-            --border-radius: 12px;
+            --primary-color: #FFB800;
+            --secondary-color: #333;
+            --accent-color: #FFB800;
+            --text-color: #fff;
+            --border-radius: 8px;
+            --card-bg: #1E1E1E;
+            --body-bg: #121212;
+            --input-bg: #2D2D2D;
+            --border-color: #444;
+            --success-color: #4CAF50;
+            --danger-color: #F44336;
+            --container-width: 900px;
+            --container-padding: 25px;
         }
 
         body {
-            background-color: var(--secondary-color);
+            background-color: var(--body-bg);
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            padding: 30px 0;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
         }
 
-        .container {
-            max-width: 1000px;
+        .app-container {
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 30px auto;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
         }
 
-        .card {
+        .app-header {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-title {
+            color: var(--primary-color);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .app-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            background-color: transparent;
+            color: var(--text-color);
             border: none;
             border-radius: var(--border-radius);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            margin-bottom: 24px;
-            transition: transform 0.2s ease;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .card:hover {
-            transform: translateY(-2px);
+        .nav-tab:hover {
+            background-color: rgba(255, 184, 0, 0.1);
         }
 
-        .card-header {
-            background: linear-gradient(135deg, var(--primary-color), #2C5282);
-            color: white;
-            border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
-            padding: 15px 20px;
+        .nav-tab.active {
+            background-color: var(--primary-color);
+            color: #000;
         }
 
-        .card-body {
-            padding: 25px;
-            background: white;
+        .app-content {
+            padding: var(--container-padding);
         }
 
-        .form-control {
-            border-radius: 8px;
-            border: 1px solid #E2E8F0;
-            padding: 10px 15px;
+        .section {
+            margin-bottom: 25px;
         }
 
-        .form-control:focus {
+        .section-title {
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title .btn {
+            margin-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .input-label {
+            min-width: 100px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .input-field {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-control, .form-select {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            height: 35px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        textarea.form-control {
+            height: auto;
+            padding: 8px 10px;
+        }
+
+        .form-control:focus, .form-select:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+            box-shadow: 0 0 0 2px rgba(255, 184, 0, 0.2);
+            background-color: var(--input-bg);
+            color: var(--text-color);
         }
 
         .btn {
-            border-radius: 8px;
-            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            padding: 6px 12px;
             font-weight: 500;
             transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 0.8rem;
         }
 
         .btn-primary {
             background-color: var(--primary-color);
             border: none;
+            color: #000;
         }
 
         .btn-primary:hover {
-            background-color: #357ABD;
+            background-color: #E0A800;
             transform: translateY(-1px);
+            color: #000;
         }
 
         .btn-danger {
-            background-color: #E53E3E;
+            background-color: var(--danger-color);
             border: none;
         }
 
         .btn-success {
-            background-color: #48BB78;
+            background-color: var(--success-color);
             border: none;
         }
 
-        .host-item, .carousel-config-item {  /* 修改类名 */
-            background-color: var(--secondary-color);
+        .api-container, .carousel-container {
+            background-color: rgba(30, 30, 30, 0.5);
             border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
+            border: 1px solid var(--border-color);
         }
 
-        #jsonPreview {
-            background-color: #2D3748;
+        .api-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+        }
+
+        .api-label {
+            min-width: 85px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .api-input {
+            flex: 1;
+            margin-right: 8px;
+        }
+
+        .carousel-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .carousel-item:last-child {
+            border-bottom: none;
+        }
+
+        /* 轮播图部分没有数据时的样式 */
+        .empty-state {
+            padding: 15px;
+            text-align: center;
+            color: #999;
+            border: 1px dashed var(--border-color);
+            border-radius: var(--border-radius);
+        }
+
+        .platform-item {
+            border-left: 3px solid var(--primary-color);
+            background: rgba(45, 45, 45, 0.3);
+            border-radius: var(--border-radius);
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .json-preview {
+            background-color: #1A1A1A;
             color: #E2E8F0;
-            padding: 20px;
+            padding: 15px;
             border-radius: var(--border-radius);
             font-family: 'Monaco', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
         }
 
-        .page-title {
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .platform-icon {
+            font-size: 1.1em;
+            margin-right: 8px;
             color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 40px;
-            font-size: 2.5rem;
+        }
+
+        .form-check-input {
+            background-color: var(--input-bg);
+            border-color: var(--border-color);
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
         }
 
         .form-check-input:checked {
@@ -113,111 +283,335 @@
             border-color: var(--primary-color);
         }
 
-        .input-group {
-            margin-bottom: 15px;
+        .form-check-label {
+            user-select: none;
+            font-size: 0.9rem;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .app-container {
+                margin: 0;
+                max-width: 100%;
+                border-radius: 0;
+            }
+            
+            .app-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .app-nav {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .input-label {
+                margin-bottom: 5px;
+                min-width: auto;
+            }
+            
+            .input-field {
+                width: 100%;
+            }
+            
+            :root {
+                --container-padding: 15px;
+            }
+
+            .api-item {
+                flex-wrap: wrap;
+            }
+
+            .api-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+            .api-input {
+                width: calc(100% - 60px);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 在 container div 的开头添加 -->
-    <div class="container">
-        <div class="d-flex justify-content-end mb-4">
-            <a href="update_generator.html" class="btn btn-outline-primary">
-                <i class="fas fa-sync-alt me-2"></i>更新配置生成器
-            </a>
+    <div class="app-container">
+        <!-- 顶部导航 -->
+        <div class="app-header">
+            <h3 class="app-title">OpenClash 配置生成器</h3>
+            <div class="app-nav">
+                <button class="nav-tab active" onclick="switchTab('basic-config')">
+                    <i class="fas fa-cog me-2"></i>基本配置
+                </button>
+                <button class="nav-tab" onclick="switchTab('update-config')">
+                    <i class="fas fa-sync-alt me-2"></i>更新配置
+                </button>
+            </div>
         </div>
-        <h1 class="text-center mb-4">OpenClash 配置生成器</h1>
-        
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
+
+        <!-- 主要内容区域 -->
+        <div class="app-content">
+            <!-- 基本配置选项卡 -->
+            <div id="basic-config" class="tab-content active">
                 <form id="configForm">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">基本配置</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label class="form-label">应用名称:</label>
+                    <div class="section">
+                        <h5 class="section-title">基本配置</h5>
+                        <div class="input-group">
+                            <div class="input-label">应用名称:</div>
+                            <div class="input-field">
                                 <input type="text" class="form-control" name="authentication" value="OpenClash">
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">官网地址:</label>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-label">官网地址:</div>
+                            <div class="input-field">
                                 <input type="text" class="form-control" name="hostSource" value="https://icloud.bupat.top">
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">群组地址:</label>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-label">群组地址:</div>
+                            <div class="input-field">
                                 <input type="text" class="form-control" name="customer" value="https://t.me/Print_520">
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Crisp待开发:</label>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-label">Crisp待开发:</div>
+                            <div class="input-field">
                                 <input type="text" class="form-control" name="crisp">
                             </div>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">功能开关-兑换码只支持v2b</h5>
+                    <div class="section">
+                        <h5 class="section-title">功能开关 (兑换码只支持v2b)</h5>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="notice" checked>
+                            <label class="form-check-label">启用公告</label>
                         </div>
-                        <div class="card-body">
-                            <div class="form-check mb-3">
-                                <input type="checkbox" class="form-check-input" name="notice" checked>
-                                <label class="form-check-label">启用公告:</label>
-                            </div>
-                            <div class="form-check mb-3">
-                                <input type="checkbox" class="form-check-input" name="exchange" checked>
-                                <label class="form-check-label">启用兑换:</label>
-                            </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" name="exchange" checked>
+                            <label class="form-check-label">启用兑换</label>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">API配置-后面不能带</></h5>
+                    <div class="section">
+                        <h5 class="section-title">
+                            API配置 (后面不能带/>)
                             <button type="button" class="btn btn-sm btn-primary" onclick="addHost()">添加API</button>
-                        </div>
-                        <div class="card-body">
-                            <div id="hostsContainer"></div>
-                        </div>
+                        </h5>
+                        <div id="hostsContainer"></div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">轮播图配置-待开发添加</h5>
+                    <div class="section">
+                        <h5 class="section-title">
+                            轮播图配置 (待开发添加)
                             <button type="button" class="btn btn-sm btn-primary" onclick="addCarousel()">添加轮播图</button>
-                        </div>
-                        <div class="card-body">
-                            <div id="carouselContainer"></div>
+                        </h5>
+                        <div id="carouselContainer">
+                            <!-- 轮播图内容将由JavaScript添加 -->
                         </div>
                     </div>
 
-                    <div class="d-grid gap-2">
+                    <div class="d-grid">
                         <button type="submit" class="btn btn-primary">生成配置</button>
                     </div>
                 </form>
 
-                <div class="card mt-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">配置预览</h5>
-                        <button type="button" class="btn btn-success" onclick="downloadConfig()">下载配置</button>
+                <div class="section mt-4">
+                    <h5 class="section-title">
+                        配置预览
+                        <button type="button" class="btn btn-sm btn-success" onclick="downloadConfig()">下载配置</button>
+                    </h5>
+                    <pre id="jsonPreview" class="json-preview"></pre>
+                </div>
+            </div>
+
+            <!-- 更新配置选项卡 -->
+            <div id="update-config" class="tab-content">
+                <form id="updateForm">
+                    <div class="section">
+                        <h5 class="section-title">通用配置</h5>
+                        <div class="input-group">
+                            <div class="input-label">版本号:</div>
+                            <div class="input-field">
+                                <input type="text" class="form-control" name="version" placeholder="例如: 1.0.0" required>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-label">更新内容:</div>
+                            <div class="input-field">
+                                <textarea class="form-control" name="body" rows="2" placeholder="输入通用更新内容"></textarea>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-label">下载链接:</div>
+                            <div class="input-field">
+                                <input type="text" class="form-control" name="download_url" placeholder="输入通用下载链接">
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <pre id="jsonPreview"></pre>
+
+                    <div class="section">
+                        <h5 class="section-title">平台特定配置</h5>
+                        
+                        <!-- Windows -->
+                        <div class="platform-item">
+                            <div class="platform-header">
+                                <i class="fab fa-windows platform-icon"></i>Windows 配置
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">版本号:</div>
+                                <div class="input-field">
+                                    <input type="text" class="form-control" name="windows_version" placeholder="Windows版本号">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">更新内容:</div>
+                                <div class="input-field">
+                                    <textarea class="form-control" name="windows_body" rows="2" placeholder="Windows更新内容"></textarea>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">下载链接:</div>
+                                <div class="input-field">
+                                    <input type="text" class="form-control" name="windows_download_url" placeholder="Windows下载链接">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- macOS -->
+                        <div class="platform-item">
+                            <div class="platform-header">
+                                <i class="fab fa-apple platform-icon"></i>macOS 配置
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">版本号:</div>
+                                <div class="input-field">
+                                    <input type="text" class="form-control" name="macos_version" placeholder="macOS版本号">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">更新内容:</div>
+                                <div class="input-field">
+                                    <textarea class="form-control" name="macos_body" rows="2" placeholder="macOS更新内容"></textarea>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">下载链接:</div>
+                                <div class="input-field">
+                                    <input type="text" class="form-control" name="macos_download_url" placeholder="macOS下载链接">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Android -->
+                        <div class="platform-item">
+                            <div class="platform-header">
+                                <i class="fab fa-android platform-icon"></i>Android 配置
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">版本号:</div>
+                                <div class="input-field">
+                                    <input type="text" class="form-control" name="android_version" placeholder="Android版本号">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">更新内容:</div>
+                                <div class="input-field">
+                                    <textarea class="form-control" name="android_body" rows="2" placeholder="Android更新内容"></textarea>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">下载链接:</div>
+                                <div class="input-field">
+                                    <input type="text" class="form-control" name="android_download_url" placeholder="Android下载链接">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Linux -->
+                        <div class="platform-item">
+                            <div class="platform-header">
+                                <i class="fab fa-linux platform-icon"></i>Linux 配置
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">版本号:</div>
+                                <div class="input-field">
+                                    <input type="text" class="form-control" name="linux_version" placeholder="Linux版本号">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">更新内容:</div>
+                                <div class="input-field">
+                                    <textarea class="form-control" name="linux_body" rows="2" placeholder="Linux更新内容"></textarea>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">下载链接:</div>
+                                <div class="input-field">
+                                    <input type="text" class="form-control" name="linux_download_url" placeholder="Linux下载链接">
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">生成配置</button>
+                    </div>
+                </form>
+
+                <div class="section mt-4">
+                    <h5 class="section-title">
+                        配置预览
+                        <div>
+                            <button class="btn btn-sm btn-light me-2" onclick="copyJson()">复制</button>
+                            <button class="btn btn-sm btn-success" onclick="downloadJson()">下载</button>
+                        </div>
+                    </h5>
+                    <pre id="jsonOutput" class="json-preview"></pre>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // 切换选项卡功能
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.nav-tab').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`.nav-tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // 基本配置相关函数
         function addHost() {
             const container = document.getElementById('hostsContainer');
             const hostItem = document.createElement('div');
-            hostItem.className = 'host-item';
+            hostItem.className = 'api-container';
             hostItem.innerHTML = `
-                <div class="input-group">
-                    <input type="text" class="form-control" name="hosts[]" value="https://icloud.bupat.top">
-                    <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">删除</button>
+                <div class="api-item">
+                    <div class="api-label">API地址:</div>
+                    <div class="api-input">
+                        <input type="text" class="form-control" name="hosts[]" value="https://icloud.bupat.top">
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.api-container').remove()">删除</button>
                 </div>
             `;
             container.appendChild(hostItem);
@@ -226,17 +620,21 @@
         function addCarousel() {
             const container = document.getElementById('carouselContainer');
             const carouselItem = document.createElement('div');
-            carouselItem.className = 'carousel-config-item';  // 使用新的类名
+            carouselItem.className = 'api-container';
             carouselItem.innerHTML = `
-                <div class="mb-3">
-                    <label class="form-label">图片地址</label>
-                    <input type="text" class="form-control" name="carouselImages[]" value="https://icloud.bupat.top">
+                <div class="api-item">
+                    <div class="api-label">图片地址:</div>
+                    <div class="api-input">
+                        <input type="text" class="form-control" name="carouselImages[]" value="https://icloud.bupat.top">
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">链接地址</label>
-                    <input type="text" class="form-control" name="carouselAddresses[]" value="https://t.me/Print_520">
+                <div class="api-item">
+                    <div class="api-label">链接地址:</div>
+                    <div class="api-input">
+                        <input type="text" class="form-control" name="carouselAddresses[]" value="https://t.me/Print_520">
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.api-container').remove()">删除</button>
                 </div>
-                <button type="button" class="btn btn-danger w-100" onclick="this.parentElement.remove()">删除此轮播图</button>
             `;
             container.appendChild(carouselItem);
         }
@@ -277,6 +675,48 @@
             }
         }
 
+        // 更新配置相关函数
+        function copyJson() {
+            const jsonText = document.getElementById('jsonOutput').textContent;
+            navigator.clipboard.writeText(jsonText).then(() => {
+                alert('配置已复制到剪贴板！');
+            });
+        }
+
+        function downloadJson() {
+            try {
+                const jsonText = document.getElementById('jsonOutput').textContent;
+                if (!jsonText || jsonText.trim() === '') {
+                    alert('请先生成配置内容');
+                    return;
+                }
+                
+                // 创建 Blob 对象
+                const blob = new Blob([jsonText], { type: 'application/json' });
+                
+                // 创建下载链接
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'update.json';
+                
+                // 添加到文档并触发点击
+                document.body.appendChild(a);
+                
+                // 使用 setTimeout 确保下载触发
+                setTimeout(() => {
+                    a.click();
+                    // 清理
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            } catch (error) {
+                console.error('下载配置时出错:', error);
+                alert('下载配置时出错: ' + error.message);
+            }
+        }
+
+        // 表单提交处理
         document.getElementById('configForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -305,13 +745,48 @@
             document.getElementById('jsonPreview').textContent = JSON.stringify(config, null, 2);
         });
 
-        // 修改初始化函数以确保正确加载
+        document.getElementById('updateForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const config = {
+                version: formData.get('version'),
+                body: formData.get('body'),
+                download_url: formData.get('download_url'),
+                platforms: {
+                    windows: {
+                        version: formData.get('windows_version') || formData.get('version'),
+                        body: formData.get('windows_body') || formData.get('body'),
+                        download_url: formData.get('windows_download_url') || formData.get('download_url')
+                    },
+                    macos: {
+                        version: formData.get('macos_version') || formData.get('version'),
+                        body: formData.get('macos_body') || formData.get('body'),
+                        download_url: formData.get('macos_download_url') || formData.get('download_url')
+                    },
+                    android: {
+                        version: formData.get('android_version') || formData.get('version'),
+                        body: formData.get('android_body') || formData.get('body'),
+                        download_url: formData.get('android_download_url') || formData.get('download_url')
+                    },
+                    linux: {
+                        version: formData.get('linux_version') || formData.get('version'),
+                        body: formData.get('linux_body') || formData.get('body'),
+                        download_url: formData.get('linux_download_url') || formData.get('download_url')
+                    }
+                }
+            };
+
+            document.getElementById('jsonOutput').textContent = JSON.stringify(config, null, 2);
+        });
+
+        // 页面加载时初始化
         window.addEventListener('DOMContentLoaded', function() {
             // 添加默认的3个host
             for (let i = 0; i < 3; i++) {
                 addHost();
             }
-            // 添加默认的轮播图
+            // 默认添加一个轮播图
             addCarousel();
         });
     </script>
