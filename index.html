@@ -186,6 +186,17 @@
             border: none;
         }
 
+        .btn-light {
+            background-color: #555;
+            border: none;
+            color: white;
+        }
+
+        .btn-light:hover {
+            background-color: #666;
+            color: white;
+        }
+
         .api-container, .carousel-container {
             background-color: rgba(30, 30, 30, 0.5);
             border-radius: var(--border-radius);
@@ -292,6 +303,52 @@
             display: flex;
             align-items: center;
             margin-bottom: 8px;
+            margin-right: 25px;
+        }
+
+        .form-check-group {
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* 自定义通知提示框 */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background-color: #1E1E1E;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .toast-icon {
+            margin-right: 12px;
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        .toast-message {
+            flex: 1;
         }
 
         /* 移动端适配 */
@@ -341,6 +398,20 @@
 
             .api-input {
                 width: calc(100% - 60px);
+            }
+
+            .form-check-group {
+                flex-direction: column;
+            }
+
+            .toast-container {
+                left: 15px;
+                right: 15px;
+                bottom: 15px;
+            }
+
+            .toast {
+                width: 100%;
             }
         }
     </style>
@@ -395,13 +466,15 @@
 
                     <div class="section">
                         <h5 class="section-title">功能开关 (兑换码只支持v2b)</h5>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" name="notice" checked>
-                            <label class="form-check-label">启用公告</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" name="exchange" checked>
-                            <label class="form-check-label">启用兑换</label>
+                        <div class="form-check-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="notice" checked>
+                                <label class="form-check-label">启用公告</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="exchange" checked>
+                                <label class="form-check-label">启用兑换</label>
+                            </div>
                         </div>
                     </div>
 
@@ -431,7 +504,10 @@
                 <div class="section mt-4">
                     <h5 class="section-title">
                         配置预览
-                        <button type="button" class="btn btn-sm btn-success" onclick="downloadConfig()">下载配置</button>
+                        <div>
+                            <button class="btn btn-sm btn-light me-2" onclick="copyConfig()">复制配置</button>
+                            <button class="btn btn-sm btn-success" onclick="downloadConfig()">下载配置</button>
+                        </div>
                     </h5>
                     <pre id="jsonPreview" class="json-preview"></pre>
                 </div>
@@ -575,8 +651,8 @@
                     <h5 class="section-title">
                         配置预览
                         <div>
-                            <button class="btn btn-sm btn-light me-2" onclick="copyJson()">复制</button>
-                            <button class="btn btn-sm btn-success" onclick="downloadJson()">下载</button>
+                            <button class="btn btn-sm btn-light me-2" onclick="copyJson()">复制配置</button>
+                            <button class="btn btn-sm btn-success" onclick="downloadJson()">下载配置</button>
                         </div>
                     </h5>
                     <pre id="jsonOutput" class="json-preview"></pre>
@@ -585,7 +661,47 @@
         </div>
     </div>
 
+    <!-- 自定义通知提示框容器 -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <script>
+        // 自定义通知提示框功能
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            
+            // 创建提示框元素
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            // 根据类型设置图标
+            let icon = 'check-circle';
+            if (type === 'error') icon = 'exclamation-circle';
+            if (type === 'info') icon = 'info-circle';
+            
+            // 设置提示框内容
+            toast.innerHTML = `
+                <div class="toast-icon"><i class="fas fa-${icon}"></i></div>
+                <div class="toast-message">${message}</div>
+            `;
+            
+            // 添加到容器
+            container.appendChild(toast);
+            
+            // 显示提示框（使用setTimeout以确保动画效果）
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // 3秒后隐藏提示框
+            setTimeout(() => {
+                toast.classList.remove('show');
+                // 等待过渡动画完成后移除元素
+                setTimeout(() => {
+                    container.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
         // 切换选项卡功能
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => {
@@ -639,11 +755,25 @@
             container.appendChild(carouselItem);
         }
 
+        function copyConfig() {
+            const jsonText = document.getElementById('jsonPreview').textContent;
+            if (!jsonText || jsonText.trim() === '') {
+                showToast('请先生成配置内容', 'error');
+                return;
+            }
+            
+            navigator.clipboard.writeText(jsonText).then(() => {
+                showToast('配置已复制到剪贴板!');
+            }).catch(err => {
+                showToast('复制失败: ' + err, 'error');
+            });
+        }
+
         function downloadConfig() {
             try {
                 const jsonText = document.getElementById('jsonPreview').textContent;
                 if (!jsonText || jsonText.trim() === '') {
-                    alert('请先生成配置内容');
+                    showToast('请先生成配置内容', 'error');
                     return;
                 }
                 
@@ -668,18 +798,26 @@
                     // 清理
                     document.body.removeChild(element);
                     URL.revokeObjectURL(url);
+                    showToast('配置已下载');
                 }, 100);
             } catch (error) {
                 console.error('下载配置时出错:', error);
-                alert('下载配置时出错: ' + error.message);
+                showToast('下载配置时出错: ' + error.message, 'error');
             }
         }
 
         // 更新配置相关函数
         function copyJson() {
             const jsonText = document.getElementById('jsonOutput').textContent;
+            if (!jsonText || jsonText.trim() === '') {
+                showToast('请先生成配置内容', 'error');
+                return;
+            }
+            
             navigator.clipboard.writeText(jsonText).then(() => {
-                alert('配置已复制到剪贴板！');
+                showToast('配置已复制到剪贴板!');
+            }).catch(err => {
+                showToast('复制失败: ' + err, 'error');
             });
         }
 
@@ -687,7 +825,7 @@
             try {
                 const jsonText = document.getElementById('jsonOutput').textContent;
                 if (!jsonText || jsonText.trim() === '') {
-                    alert('请先生成配置内容');
+                    showToast('请先生成配置内容', 'error');
                     return;
                 }
                 
@@ -709,10 +847,11 @@
                     // 清理
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
+                    showToast('配置已下载');
                 }, 100);
             } catch (error) {
                 console.error('下载配置时出错:', error);
-                alert('下载配置时出错: ' + error.message);
+                showToast('下载配置时出错: ' + error.message, 'error');
             }
         }
 
@@ -743,6 +882,7 @@
             }
 
             document.getElementById('jsonPreview').textContent = JSON.stringify(config, null, 2);
+            showToast('配置已生成');
         });
 
         document.getElementById('updateForm').addEventListener('submit', function(e) {
@@ -778,6 +918,7 @@
             };
 
             document.getElementById('jsonOutput').textContent = JSON.stringify(config, null, 2);
+            showToast('更新配置已生成');
         });
 
         // 页面加载时初始化
