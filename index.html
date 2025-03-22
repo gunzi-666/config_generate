@@ -457,7 +457,7 @@
                             </div>
                         </div>
                         <div class="input-group">
-                            <div class="input-label">Crisp待开发:</div>
+                            <div class="input-label">(配置则显示)Crisp:</div>
                             <div class="input-field">
                                 <input type="text" class="form-control" name="crisp">
                             </div>
@@ -465,7 +465,7 @@
                     </div>
 
                     <div class="section">
-                        <h5 class="section-title">功能开关 (兑换码只支持v2b)</h5>
+                        <h5 class="section-title">系统功能开关 (兑换码只支持v2b)</h5>
                         <div class="form-check-group">
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" name="notice" checked>
@@ -475,12 +475,20 @@
                                 <input type="checkbox" class="form-check-input" name="exchange" checked>
                                 <label class="form-check-label">启用兑换</label>
                             </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="TrafficDetails" checked>
+                                <label class="form-check-label">启用流量明细</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="OnlineTicket" checked>
+                                <label class="form-check-label">启用在线工单</label>
+                            </div>
                         </div>
                     </div>
 
                     <div class="section">
                         <h5 class="section-title">
-                            API配置 (后面不能带/>)
+                            API配置 (后面不能带/)
                             <button type="button" class="btn btn-sm btn-primary" onclick="addHost()">添加API</button>
                         </h5>
                         <div id="hostsContainer"></div>
@@ -488,7 +496,7 @@
 
                     <div class="section">
                         <h5 class="section-title">
-                            轮播图配置 (待开发添加)
+                            轮播图配置 (配置则显示功能组件)
                             <button type="button" class="btn btn-sm btn-primary" onclick="addCarousel()">添加轮播图</button>
                         </h5>
                         <div id="carouselContainer">
@@ -758,7 +766,7 @@
         function copyConfig() {
             const jsonText = document.getElementById('jsonPreview').textContent;
             if (!jsonText || jsonText.trim() === '') {
-                showToast('请先生成配置内容', 'error');
+                showToast('请生成配置内容', 'error');
                 return;
             }
             
@@ -773,7 +781,7 @@
             try {
                 const jsonText = document.getElementById('jsonPreview').textContent;
                 if (!jsonText || jsonText.trim() === '') {
-                    showToast('请先生成配置内容', 'error');
+                    showToast('请生成配置内容', 'error');
                     return;
                 }
                 
@@ -810,7 +818,7 @@
         function copyJson() {
             const jsonText = document.getElementById('jsonOutput').textContent;
             if (!jsonText || jsonText.trim() === '') {
-                showToast('请先生成配置内容', 'error');
+                showToast('请生成配置内容', 'error');
                 return;
             }
             
@@ -825,7 +833,7 @@
             try {
                 const jsonText = document.getElementById('jsonOutput').textContent;
                 if (!jsonText || jsonText.trim() === '') {
-                    showToast('请先生成配置内容', 'error');
+                    showToast('请生成配置内容', 'error');
                     return;
                 }
                 
@@ -867,6 +875,8 @@
                 crisp: formData.get('crisp'),
                 notice: formData.get('notice') ? 1 : 0,
                 exchange: formData.get('exchange') ? 1 : 0,
+                TrafficDetails: formData.get('TrafficDetails') ? 1 : 0,
+                OnlineTicket: formData.get('OnlineTicket') ? 1 : 0,
                 hosts: Array.from(formData.getAll('hosts[]')),
                 Carousel: []
             };
