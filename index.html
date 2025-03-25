@@ -462,6 +462,12 @@
                                 <input type="text" class="form-control" name="crisp">
                             </div>
                         </div>
+                        <div class="input-group">
+                            <div class="input-label">邀请链接(配置则复制完整路径):</div>
+                            <div class="input-field">
+                                <input type="text" class="form-control" name="InviteLink">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="section">
@@ -873,6 +879,7 @@
                 host_source: formData.get('hostSource'),
                 Customer: formData.get('customer'),
                 crisp: formData.get('crisp'),
+                InviteLink:formData.get('InviteLink'),
                 notice: formData.get('notice') ? 1 : 0,
                 exchange: formData.get('exchange') ? 1 : 0,
                 TrafficDetails: formData.get('TrafficDetails') ? 1 : 0,
